@@ -2,3 +2,6 @@
 	path = imx-atf
 	url = git://source.codeaurora.org/external/imx/imx-atf.git
 	branch = imx_5.4.70_2.3.0
+[submodule "u-boot"]
+	path = u-boot
+	url = https://gitlab.denx.de/u-boot/u-boot.git
