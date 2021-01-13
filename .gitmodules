@@ -9,3 +9,4 @@
 [submodule "u-boot-dr"]
 	path = u-boot-dr
 	url = git@github.com:data-respons-solutions/u-boot-dr.git
+	branch = dr-imx8mm-evk
