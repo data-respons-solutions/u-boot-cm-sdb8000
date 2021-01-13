@@ -23,10 +23,13 @@ IMX8_FLASH_PATH ?= imx-mkimage/iMX8M/flash.bin
 all: $(IMX8_FLASH_PATH)
 .PHONY: all
 
-$(U_BOOT_PATH):
-	make KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C u-boot imx8mm_evk_defconfig
-	make KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C u-boot
+$(U_BOOT_PATH): u-boot-dr force
+	make KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C u-boot-dr dr_imx8mm_evk_defconfig
+	make KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C u-boot-dr
 
+force:
+	true
+	
 $(U_BOOT_SPL_PATH) $(U_BOOT_DTB_PATH) $(U_BOOT_MKIMAGE_PATH): $(U_BOOT_PATH) ;
 
 $(FIRMWARE_IMX_NAME):
