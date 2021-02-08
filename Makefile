@@ -15,7 +15,7 @@ U_BOOT_SPL ?= u-boot-spl.bin
 U_BOOT_SPL_PATH ?= $(U_BOOT_BUILD)/spl/$(U_BOOT_SPL)
 U_BOOT ?= u-boot-nodtb.bin
 U_BOOT_PATH ?= $(U_BOOT_BUILD)/$(U_BOOT)
-U_BOOT_DTB ?= imx8mm-evk.dtb
+U_BOOT_DTB ?= dr-imx8mm-evk.dtb
 U_BOOT_DTB_PATH ?= $(U_BOOT_BUILD)/arch/arm/dts/$(U_BOOT_DTB)
 U_BOOT_MKIMAGE ?= mkimage
 U_BOOT_MKIMAGE_PATH ?= $(U_BOOT_BUILD)/tools/$(U_BOOT_MKIMAGE)
@@ -26,7 +26,7 @@ all: $(IMX8_FLASH_PATH)
 .PHONY: all
 
 $(U_BOOT_PATH): uboot-imx-dr force
-	make ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C uboot-imx-dr imx8mm_evk_defconfig
+	make ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C uboot-imx-dr dr_imx8mm_evk_defconfig
 	make ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C uboot-imx-dr
 
 force:
