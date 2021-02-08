@@ -2,12 +2,12 @@ SRC_VERSION := $(shell git describe --dirty --always --tags)
 
 CROSS_COMPILE ?= aarch64-linux-gnu-
 
-FIRMWARE_IMX_VERSION ?= 8.9
+FIRMWARE_IMX_VERSION ?= 8.8
 FIRMWARE_IMX_NAME ?= firmware-imx-$(FIRMWARE_IMX_VERSION)
 FIRMWARE_IMX_URL ?= https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/$(FIRMWARE_IMX_NAME).bin
 
 ATF ?= bl31.bin
-ATF_PATH ?= ./imx-atf/build/fvp/release/$(ATF)
+ATF_PATH ?= ./imx-atf/build/imx8mm/release/$(ATF)
 
 U_BOOT_BUILD ?= ./u-boot-build
 U_BOOT_SPL ?= u-boot-spl.bin
@@ -23,9 +23,9 @@ IMX8_FLASH_PATH ?= imx-mkimage/iMX8M/flash.bin
 all: $(IMX8_FLASH_PATH)
 .PHONY: all
 
-$(U_BOOT_PATH): u-boot-dr force
-	make KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C u-boot-dr dr_imx8mm_evk_defconfig
-	make KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C u-boot-dr
+$(U_BOOT_PATH): uboot-imx-dr force
+	make ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C uboot-imx-dr imx8mm_evk_defconfig
+	make ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) -C uboot-imx-dr
 
 force:
 	true
@@ -38,16 +38,18 @@ $(FIRMWARE_IMX_NAME):
 	./$(FIRMWARE_IMX_NAME).bin --auto-accept --force
 	
 $(ATF_PATH):
-	make CROSS_COMPILE=$(CROSS_COMPILE) -C imx-atf
+	make PLAT=imx8mm CROSS_COMPILE=$(CROSS_COMPILE) bl31 -C imx-atf
 	
 $(IMX8_FLASH_PATH): $(U_BOOT_PATH) $(U_BOOT_SPL_PATH) $(U_BOOT_DTB_PATH) $(U_BOT_MKIMAGE_PATH) $(ATF_PATH) $(FIRMWARE_IMX_NAME)
 	cp $(U_BOOT_PATH) imx-mkimage/iMX8M/
 	cp $(U_BOOT_SPL_PATH) imx-mkimage/iMX8M/
-	cp $(U_BOOT_DTB_PATH) imx-mkimage/iMX8M/
+	cp $(U_BOOT_DTB_PATH) imx-mkimage/iMX8M/evk.dtb
 	cp $(U_BOOT_MKIMAGE_PATH) imx-mkimage/iMX8M/mkimage_uboot
 	cp $(ATF_PATH) imx-mkimage/iMX8M/
 	cp $(FIRMWARE_IMX_NAME)/firmware/ddr/synopsys/lpddr4_pmu_train_* imx-mkimage/iMX8M/
 	make -C imx-mkimage SOC=iMX8MM flash_evk
+	cd imx-mkimage/iMX8M && ./mkimage_imx8 -version v1 -fit -loader u-boot-spl-ddr.bin 0x7E1000 -out sdp-spl.bin
+	
 
 .PHONY: clean
 clean:
