@@ -1,3 +1,2 @@
-firmware-imx-*
-u-boot-build
+build/
 mkimage_imx8
