@@ -32,17 +32,15 @@ IMAGE_U_BOOT = $(IMAGE_BUILD)/u-boot.itb
 all: image
 .PHONY: all
 
-atf: $(ATF_BIN)
-.PHONY: atf
+atf:
+	make -C imx-atf PLAT=imx8mm CROSS_COMPILE=$(CROSS_COMPILE) bl31
 
 firmware: $(FIRMWARE_IMX_DIR)
 .PHONY: firmware
 
-u-boot: force
+u-boot:
 	make -C uboot-imx-dr ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) dr_imx8mm_evk_defconfig
 	make -C uboot-imx-dr ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE)
-force:
-	true
 	
 image: $(IMAGE_SPL) $(IMAGE_U_BOOT)
 .PHONY: image
@@ -53,9 +51,6 @@ $(FIRMWARE_IMX_DIR):
 	chmod +x $(FIRMWARE_IMX_BUILD)/$(FIRMWARE_IMX_BIN)
 	cd $(FIRMWARE_IMX_BUILD) && ./$(FIRMWARE_IMX_BIN) --auto-accept --force
 
-$(ATF_BIN):
-	make -C imx-atf PLAT=imx8mm CROSS_COMPILE=$(CROSS_COMPILE) bl31
-	
 $(IMX_MKIMAGE_BUILD):
 	mkdir -p $(BUILD_DIR)
 	cp -r imx-mkimage/. $(IMX_MKIMAGE_BUILD)
