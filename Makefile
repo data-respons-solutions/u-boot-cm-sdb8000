@@ -29,7 +29,7 @@ IMX_MKIMAGE_BUILD = $(BUILD_DIR)/imx-mkimage
 IMX_MKIMAGE8 = $(IMX_MKIMAGE_BUILD)/iMX8M/mkimage_imx8
 
 IMAGE_BUILD = $(IMX_MKIMAGE_BUILD)/iMX8M
-IMAGE_SPL = $(IMAGE_BUILD)/sdp-spl.bin
+IMAGE_SPL = $(IMAGE_BUILD)/spl.img
 IMAGE_U_BOOT = $(IMAGE_BUILD)/u-boot.itb
 
 all: image
@@ -69,7 +69,7 @@ $(IMAGE_SPL): $(IMX_MKIMAGE_BUILD) $(IMX_MKIMAGE8) firmware u-boot
 	cp -v $(U_BOOT_SPL_PATH) $(IMAGE_BUILD)/
 	cp -v $(FIRMWARE_IMX_LPDDR4) $(IMAGE_BUILD)/
 	make -C $(IMAGE_BUILD) -f soc.mak SOC=iMX8MM u-boot-spl-ddr.bin
-	cd $(IMAGE_BUILD) && ./mkimage_imx8 -version v1 -fit -loader u-boot-spl-ddr.bin 0x7E1000 -out sdp-spl.bin
+	cd $(IMAGE_BUILD) && ./mkimage_imx8 -version v1 -fit -loader u-boot-spl-ddr.bin 0x7E1000 -out spl.img
 	
 $(IMAGE_U_BOOT): $(IMX_MKIMAGE_BUILD) u-boot atf optee-os
 	cp -v $(U_BOOT_PATH) $(IMAGE_BUILD)/

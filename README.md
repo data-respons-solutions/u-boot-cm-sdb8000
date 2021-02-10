@@ -7,7 +7,6 @@
 - python3-pyelftools
 	
 ## TODO
-- Rename sdp-spl.bin to spl.img?
 - Pass main repo git rev to uboot LOCALVERSION?
 
 ## Write
