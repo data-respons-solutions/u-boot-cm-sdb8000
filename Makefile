@@ -13,6 +13,9 @@ FIRMWARE_IMX_LPDDR4 += $(FIRMWARE_IMX_DIR)/lpddr4_pmu_train_2d_dmem.bin
 
 ATF_BIN = imx-atf/build/imx8mm/release/bl31.bin
 
+OPTEE_BUILD = $(BUILD_DIR)/imx-optee-os
+OPTEE_BIN = $(OPTEE_BUILD)/core/tee.bin
+
 U_BOOT_BUILD ?= $(BUILD_DIR)/u-boot
 U_BOOT_SPL = u-boot-spl.bin
 U_BOOT_SPL_PATH = $(U_BOOT_BUILD)/spl/$(U_BOOT_SPL)
@@ -34,6 +37,9 @@ all: image
 
 atf:
 	make -C imx-atf PLAT=imx8mm CROSS_COMPILE=$(CROSS_COMPILE) bl31
+
+optee-os:
+	make -C imx-optee-os PLATFORM=imx PLATFORM_FLAVOR=mx8mmevk CROSS_COMPILE64=$(CROSS_COMPILE) O=$(abspath $(OPTEE_BUILD))
 
 firmware: $(FIRMWARE_IMX_DIR)
 .PHONY: firmware
@@ -65,11 +71,12 @@ $(IMAGE_SPL): $(IMX_MKIMAGE_BUILD) $(IMX_MKIMAGE8) firmware u-boot
 	make -C $(IMAGE_BUILD) -f soc.mak SOC=iMX8MM u-boot-spl-ddr.bin
 	cd $(IMAGE_BUILD) && ./mkimage_imx8 -version v1 -fit -loader u-boot-spl-ddr.bin 0x7E1000 -out sdp-spl.bin
 	
-$(IMAGE_U_BOOT): $(IMX_MKIMAGE_BUILD) u-boot atf
+$(IMAGE_U_BOOT): $(IMX_MKIMAGE_BUILD) u-boot atf optee-os
 	cp -v $(U_BOOT_PATH) $(IMAGE_BUILD)/
 	cp -v $(U_BOOT_DTB_PATH) $(IMAGE_BUILD)/
 	cp -v $(U_BOOT_MKIMAGE_PATH) $(IMAGE_BUILD)/mkimage_uboot
 	cp -v $(ATF_BIN) $(IMAGE_BUILD)/
+	cp -v $(OPTEE_BIN) $(IMAGE_BUILD)/
 	make -C $(IMAGE_BUILD) -f soc.mak SOC=iMX8MM dtbs=$(U_BOOT_DTB) u-boot.itb
 
 clean:

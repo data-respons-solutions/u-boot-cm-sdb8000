@@ -1,6 +1,12 @@
 # README
+## Notes
+- Increase DR BSP uboot section size from 1.3 to 1.5MB (binary including optee is 1.2 MB)
+
+## Dependencies
+### optee-os
+- python3-pyelftools
+	
 ## TODO
-- Optee-os
 - Rename sdp-spl.bin to spl.img?
 - Pass main repo git rev to uboot LOCALVERSION?
 

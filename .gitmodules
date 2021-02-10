@@ -10,3 +10,7 @@
 	path = uboot-imx-dr
 	url = git@github.com:data-respons-solutions/uboot-imx-dr.git
 	branch = dr-imx-evk
+[submodule "imx-optee-os"]
+	path = imx-optee-os
+	url = git://source.codeaurora.org/external/imx/imx-optee-os.git
+	branch = imx_5.4.24_2.1.0
