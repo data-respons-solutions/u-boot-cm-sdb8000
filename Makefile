@@ -21,7 +21,16 @@ U_BOOT_SPL = u-boot-spl.bin
 U_BOOT_SPL_PATH = $(U_BOOT_BUILD)/spl/$(U_BOOT_SPL)
 U_BOOT = u-boot-nodtb.bin
 U_BOOT_PATH = $(U_BOOT_BUILD)/$(U_BOOT)
-U_BOOT_DTB = dr-imx8mm-evk.dtb
+# For unknown reasons eth phy detection fails in u-boot
+# with our boards dt: dr-imx8mm-evk.dtb
+# It works swapping to evk dt: imx8mm-evk.dtb
+#
+# Both dt source files (dts) are identical but for some reason
+# the generated binaries differ.
+#
+# As we're not planning on sticking to imx fork of u-boot
+# we leave it as is and get on with our lives.
+U_BOOT_DTB = imx8mm-evk.dtb
 U_BOOT_DTB_PATH = $(U_BOOT_BUILD)/arch/arm/dts/$(U_BOOT_DTB)
 U_BOOT_MKIMAGE_PATH = $(U_BOOT_BUILD)/tools/mkimage
 
