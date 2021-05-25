@@ -53,9 +53,9 @@ optee-os:
 firmware: $(FIRMWARE_IMX_DIR)
 .PHONY: firmware
 
-u-boot:
-	make -C uboot-imx-dr ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) dr_imx8mm_evk_defconfig
-	make -C uboot-imx-dr ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE)
+u-boot-build:
+	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) dr_imx8mm_evk_defconfig
+	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE)
 	
 image: $(IMAGE_SPL) $(IMAGE_U_BOOT)
 .PHONY: image
@@ -74,13 +74,13 @@ $(IMX_MKIMAGE_BUILD):
 $(IMX_MKIMAGE8): $(IMX_MKIMAGE_BUILD)
 	make -C $(IMAGE_BUILD) -f soc.mak SOC=iMX8MM mkimage_imx8
 	
-$(IMAGE_SPL): $(IMX_MKIMAGE_BUILD) $(IMX_MKIMAGE8) firmware u-boot
+$(IMAGE_SPL): $(IMX_MKIMAGE_BUILD) $(IMX_MKIMAGE8) firmware u-boot-build
 	cp -v $(U_BOOT_SPL_PATH) $(IMAGE_BUILD)/
 	cp -v $(FIRMWARE_IMX_LPDDR4) $(IMAGE_BUILD)/
 	make -C $(IMAGE_BUILD) -f soc.mak SOC=iMX8MM u-boot-spl-ddr.bin
 	cd $(IMAGE_BUILD) && ./mkimage_imx8 -version v1 -fit -loader u-boot-spl-ddr.bin 0x7E1000 -out spl.img
 	
-$(IMAGE_U_BOOT): $(IMX_MKIMAGE_BUILD) u-boot atf optee-os
+$(IMAGE_U_BOOT): $(IMX_MKIMAGE_BUILD) u-boot-build atf optee-os
 	cp -v $(U_BOOT_PATH) $(IMAGE_BUILD)/
 	cp -v $(U_BOOT_DTB_PATH) $(IMAGE_BUILD)/
 	cp -v $(U_BOOT_MKIMAGE_PATH) $(IMAGE_BUILD)/mkimage_uboot
