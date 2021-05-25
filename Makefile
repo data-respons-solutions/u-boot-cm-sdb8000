@@ -54,7 +54,7 @@ firmware: $(FIRMWARE_IMX_DIR)
 .PHONY: firmware
 
 u-boot-build:
-	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) dr_imx8mm_evk_defconfig
+	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) sdb8000_defconfig
 	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE)
 	
 image: $(IMAGE_SPL) $(IMAGE_U_BOOT)
