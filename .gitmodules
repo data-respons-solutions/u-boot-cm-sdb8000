@@ -13,4 +13,4 @@
 [submodule "u-boot"]
 	path = u-boot
 	url = git@github.com:data-respons-solutions/dr-u-boot-mirror.git
-	branch = dr-imx-evk-imx_v2020.04_5.4.70_2.3.0
+	branch = dr-sdb8000-imx_v2020.04_5.4.70_2.3.0
