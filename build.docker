@@ -1,0 +1,16 @@
+FROM debian:10.9 AS builder
+WORKDIR /usr/src
+ENV catch2_tag v3.0.0-preview3
+RUN apt update && \
+	apt install -y \
+		bc build-essential git libncurses5-dev lzop perl \
+		libssl-dev bison flex git gcc-aarch64-linux-gnu zlib1g-dev \
+		wget python3 python3-crypto python3-pyelftools \
+		device-tree-compiler
+ARG USERNAME=user
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g ${GID} ${USERNAME} && \
+	useradd -u ${UID} -g ${USERNAME} -m -d /home/${USERNAME} ${USERNAME} && \
+	chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}
+USER ${USERNAME}
