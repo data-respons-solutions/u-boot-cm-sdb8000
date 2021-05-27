@@ -1,3 +1,5 @@
+GTAG := $(shell git describe --always --tags --long --dirty)
+
 CROSS_COMPILE ?= aarch64-linux-gnu-
 
 BUILD_DIR ?= build
@@ -47,6 +49,7 @@ firmware: $(FIRMWARE_IMX_DIR)
 .PHONY: firmware
 
 u-boot-build:
+	echo "-$(GTAG)" > u-boot/.scmversion
 	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) sdb8000_defconfig
 	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE)
 	
