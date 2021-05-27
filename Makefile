@@ -1,8 +1,10 @@
 CROSS_COMPILE ?= aarch64-linux-gnu-
 
 BUILD_DIR ?= build
+DL_DIR ?= downloads
 
 FIRMWARE_IMX_BUILD = $(BUILD_DIR)/firmware-imx
+FIRMWARE_IMX_DL_DIR = $(DL_DIR)/firmware-imx
 FIRMWARE_IMX_BIN = firmware-imx-8.8.bin
 FIRMWARE_IMX_URL = https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/$(FIRMWARE_IMX_BIN)
 FIRMWARE_IMX_DIR = $(FIRMWARE_IMX_BUILD)/firmware-imx-8.8/firmware/ddr/synopsys
@@ -60,9 +62,13 @@ u-boot-build:
 image: $(IMAGE_SPL) $(IMAGE_U_BOOT)
 .PHONY: image
 
-$(FIRMWARE_IMX_DIR):
+$(FIRMWARE_IMX_DL_DIR)/$(FIRMWARE_IMX_BIN):
+	mkdir -p $(FIRMWARE_IMX_DL_DIR)
+	wget -P $(FIRMWARE_IMX_DL_DIR) $(FIRMWARE_IMX_URL)
+
+$(FIRMWARE_IMX_DIR): $(FIRMWARE_IMX_DL_DIR)/$(FIRMWARE_IMX_BIN)
 	mkdir -p $(FIRMWARE_IMX_BUILD)
-	wget -P $(FIRMWARE_IMX_BUILD) $(FIRMWARE_IMX_URL)
+	cp $(FIRMWARE_IMX_DL_DIR)/$(FIRMWARE_IMX_BIN) ${FIRMWARE_IMX_BUILD}
 	chmod +x $(FIRMWARE_IMX_BUILD)/$(FIRMWARE_IMX_BIN)
 	cd $(FIRMWARE_IMX_BUILD) && ./$(FIRMWARE_IMX_BIN) --auto-accept --force
 
