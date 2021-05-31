@@ -7,7 +7,7 @@
 	url = https://source.codeaurora.org/external/imx/imx-mkimage
 	branch = imx_5.4.70_2.3.0
 [submodule "imx-optee-os"]
-	path = imx-optee-os
+	path = optee-os
 	url = git://source.codeaurora.org/external/imx/imx-optee-os.git
 	branch = imx_5.4.24_2.1.0
 [submodule "u-boot"]
