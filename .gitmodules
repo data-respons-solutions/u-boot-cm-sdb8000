@@ -1,5 +1,5 @@
 [submodule "imx-atf"]
-	path = imx-atf
+	path = atf
 	url = git://source.codeaurora.org/external/imx/imx-atf.git
 	branch = imx_5.4.70_2.3.0
 [submodule "imx-mkimage"]
