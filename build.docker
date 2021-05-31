@@ -6,7 +6,7 @@ RUN apt update && \
 		bc build-essential git libncurses5-dev lzop perl \
 		libssl-dev bison flex git gcc-aarch64-linux-gnu zlib1g-dev \
 		wget python3 python3-crypto python3-pyelftools \
-		device-tree-compiler
+		device-tree-compiler python3-pycryptodome
 ARG USERNAME=user
 ARG UID=1000
 ARG GID=1000
