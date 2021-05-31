@@ -1,4 +1,4 @@
-[submodule "imx-atf"]
+[submodule "atf"]
 	path = atf
 	url = git@github.com:data-respons-solutions/dr-atf-mirror.git
 	branch = dr-imx_5.4.70_2.3.0
@@ -6,10 +6,10 @@
 	path = imx-mkimage
 	url = https://source.codeaurora.org/external/imx/imx-mkimage
 	branch = imx_5.4.70_2.3.0
-[submodule "imx-optee-os"]
+[submodule "optee-os"]
 	path = optee-os
 	url = git://source.codeaurora.org/external/imx/imx-optee-os.git
-	branch = imx_5.4.24_2.1.0
+	branch = imx_5.4.70_2.3.0
 [submodule "u-boot"]
 	path = u-boot
 	url = git@github.com:data-respons-solutions/dr-u-boot-mirror.git
