@@ -18,7 +18,7 @@ FIRMWARE_IMX_LPDDR4 += $(FIRMWARE_IMX_DIR)/lpddr4_pmu_train_2d_dmem.bin
 ATF_BIN = atf/build/imx8mm/release/bl31.bin
 
 OPTEE_BUILD = $(BUILD_DIR)/optee-os
-OPTEE_ELF = $(OPTEE_BUILD)/core/tee.elf
+OPTEE_BIN = $(OPTEE_BUILD)/core/tee-pager_v2.bin
 
 U_BOOT_BUILD ?= $(BUILD_DIR)/u-boot
 U_BOOT_SPL = u-boot-spl.bin
@@ -88,7 +88,7 @@ $(IMAGE_U_BOOT): $(IMX_MKIMAGE_BUILD) u-boot atf optee
 	cp -v $(U_BOOT_DTB_PATH) $(IMAGE_BUILD)/
 	cp -v $(U_BOOT_MKIMAGE_PATH) $(IMAGE_BUILD)/mkimage_uboot
 	cp -v $(ATF_BIN) $(IMAGE_BUILD)/
-	$(CROSS_COMPILE)objcopy -O binary $(OPTEE_ELF) $(IMAGE_BUILD)/tee.bin
+	cp -v $(OPTEE_BIN) $(IMAGE_BUILD)/tee.bin
 	make -C $(IMAGE_BUILD) -f soc.mak SOC=iMX8MM dtbs=$(U_BOOT_DTB) u-boot.itb
 
 clean:
