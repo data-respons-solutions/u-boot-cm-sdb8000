@@ -1,7 +1,7 @@
 [submodule "atf"]
 	path = atf
 	url = git@github.com:data-respons-solutions/dr-atf-mirror.git
-	branch = dr-imx_5.4.70_2.3.0
+	branch = sdb8000-imx_5.4.70_2.3.0
 [submodule "imx-mkimage"]
 	path = imx-mkimage
 	url = https://source.codeaurora.org/external/imx/imx-mkimage
