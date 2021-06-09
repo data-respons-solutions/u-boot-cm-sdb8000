@@ -36,6 +36,13 @@ IMAGE_BUILD = $(IMX_MKIMAGE_BUILD)/iMX8M
 IMAGE_SPL = $(IMAGE_BUILD)/spl.img
 IMAGE_U_BOOT = $(IMAGE_BUILD)/u-boot.itb
 
+NOR_BUILD = $(BUILD_DIR)/nor
+NOR_BIN = $(NOR_BUILD)/flash.bin
+
+ARTEFACT_SPL = $(BUILD_DIR)/spl-$(GTAG).img
+ARTEFACT_U_BOOT = $(BUILD_DIR)/u-boot-$(GTAG).itb
+ARTEFACT_NOR = $(BUILD_DIR)/flash-$(GTAG).bin
+
 all: image
 .PHONY: all
 
@@ -48,7 +55,7 @@ u-boot:
 	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE)
 .PHONY: u-boot
 	
-image: $(IMAGE_SPL) $(IMAGE_U_BOOT)
+image: $(ARTEFACT_SPL) $(ARTEFACT_U_BOOT) $(ARTEFACT_NOR)
 .PHONY: image
 
 atf:
@@ -93,6 +100,18 @@ $(IMAGE_U_BOOT): $(IMX_MKIMAGE_BUILD) u-boot atf optee
 	cp -v $(ATF_BIN) $(IMAGE_BUILD)/
 	#cp -v $(OPTEE_BIN) $(IMAGE_BUILD)/tee.bin
 	make -C $(IMAGE_BUILD) -f soc.mak SOC=iMX8MM dtbs=$(U_BOOT_DTB) u-boot.itb
+
+$(NOR_BIN): $(IMAGE_SPL) $(IMAGE_U_BOOT)
+	./make_nor.sh
+
+$(ARTEFACT_SPL): $(IMAGE_SPL)
+	cp -v $(IMAGE_SPL) $(ARTEFACT_SPL)
+
+$(ARTEFACT_U_BOOT): $(IMAGE_U_BOOT)
+	cp -v $(IMAGE_U_BOOT) $(ARTEFACT_U_BOOT)
+
+$(ARTEFACT_NOR): $(NOR_BIN)
+	cp -v $(NOR_BIN) $(ARTEFACT_NOR)
 
 clean:
 	rm -rf atf/build
