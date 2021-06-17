@@ -38,6 +38,7 @@ pipeline {
 		}
 		
 		environment {
+			KNOWN_HOSTS = credentials('KNOWN_HOSTS')
 			GTAG = "${sh (returnStdout: true, script: 'git describe --always --tags --long --dirty').trim()}"
 			ARTIFACTS = "build/bin/*"
 		}
