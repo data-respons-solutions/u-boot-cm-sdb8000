@@ -60,10 +60,7 @@ image: $(ARTIFACT_SPL) $(ARTIFACT_U_BOOT) $(ARTIFACT_NOR)
 .PHONY: image
 
 atf:
-	# Due to unknown reasons when using optee, we can't load our linux fit image to 0x43200000.
-	# For now disable optee.
-	#make -C atf PLAT=imx8mm IMX_BOOT_UART_BASE=0x30a60000 CROSS_COMPILE=$(CROSS_COMPILE) SPD=opteed bl31
-	make -C atf PLAT=imx8mm IMX_BOOT_UART_BASE=0x30a60000 CROSS_COMPILE=$(CROSS_COMPILE) bl31
+	make -C atf PLAT=imx8mm IMX_BOOT_UART_BASE=0x30a60000 CROSS_COMPILE=$(CROSS_COMPILE) SPD=opteed bl31
 .PHONY: atf
 
 optee:
@@ -99,7 +96,7 @@ $(IMAGE_U_BOOT): $(IMX_MKIMAGE_BUILD) u-boot atf optee
 	cp -v $(U_BOOT_DTB_PATH) $(IMAGE_BUILD)/
 	cp -v $(U_BOOT_MKIMAGE_PATH) $(IMAGE_BUILD)/mkimage_uboot
 	cp -v $(ATF_BIN) $(IMAGE_BUILD)/
-	#cp -v $(OPTEE_BIN) $(IMAGE_BUILD)/tee.bin
+	cp -v $(OPTEE_BIN) $(IMAGE_BUILD)/tee.bin
 	make -C $(IMAGE_BUILD) -f soc.mak SOC=iMX8MM dtbs=$(U_BOOT_DTB) u-boot.itb
 
 $(NOR_BIN): $(IMAGE_SPL) $(IMAGE_U_BOOT)
