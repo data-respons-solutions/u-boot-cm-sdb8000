@@ -1,4 +1,4 @@
-GTAG := $(shell git describe --always --tags --long --dirty)
+GTAG := android-$(shell git describe --always --tags --long --dirty)
 
 CROSS_COMPILE ?= aarch64-linux-gnu-
 
@@ -48,7 +48,7 @@ firmware: $(FIRMWARE_IMX_DIR)
 
 u-boot:
 	echo "-$(GTAG)" > u-boot/.scmversion
-	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) sdb8000_defconfig
+	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) sdb8000_android_defconfig
 	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE)
 .PHONY: u-boot
 	
