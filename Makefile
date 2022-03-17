@@ -1,4 +1,18 @@
-GTAG := $(shell git describe --always --tags --long --dirty)
+TARGET_OS ?= linux
+
+ifeq ($(TARGET_OS),linux)
+DEFCONFIG ?= sdb8000_defconfig
+endif
+ifeq ($(TARGET_OS),android)
+DEFCONFIG ?= sdb8000_android_defconfig
+GTAG_PREFIX ?= android-
+endif
+
+ifeq ($(strip $(DEFCONFIG)),)
+$(error No DEFCONFIG defined)
+endif
+
+GTAG := $(GTAG_PREFIX)$(shell git describe --always --tags --long --dirty)
 
 CROSS_COMPILE ?= aarch64-linux-gnu-
 
@@ -48,7 +62,7 @@ firmware: $(FIRMWARE_IMX_DIR)
 
 u-boot:
 	echo "-$(GTAG)" > u-boot/.scmversion
-	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) sdb8000_defconfig
+	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE) $(DEFCONFIG)
 	make -C u-boot ARCH=arm KBUILD_OUTPUT=$(abspath $(U_BOOT_BUILD)) CROSS_COMPILE=$(CROSS_COMPILE)
 .PHONY: u-boot
 	
