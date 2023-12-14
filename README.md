@@ -25,6 +25,8 @@ make
 # Not from build container
 # Install tool
 sudo apt install imx-usb-loader
+# Set sdb8000 debug board SW2 to SDP mode and power on.
 # Connect sdb8000 usb A port to host, i.e USB A male-to-male.
 sudo imx_usb -c .
+
 ```
